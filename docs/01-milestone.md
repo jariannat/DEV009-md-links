@@ -7,6 +7,7 @@ específico.
 Esta función debe ser un módulo que puede **importarse** en otros scripts de
 Node.js y debe ofrecer la siguiente interfaz:
 
+
 `mdLinks(path)`
 
 Argumento:
@@ -114,6 +115,8 @@ describe('mdLinks', () => {
   consideraciones técnicas, preferimos que uses `readFile` (en lugar de
   `readFileSync`) y recomendamos el módulo `fs/promises` para utilizar estas
   funciones con promesas.
+
+  [Link text](https://website-name.com)
 
 * Encuentra los links dentro del documento
 
