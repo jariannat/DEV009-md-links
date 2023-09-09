@@ -1,27 +1,28 @@
-const { checkAbsolute, pathExists, readFiles} = require('./data');
+const { checkAbsolute, pathExists, readFiles, validateLinks} = require('./data');
 
-const mdLinks = (path) =>{
+const mdLinks = (path, validate= false) =>{
 
   return new Promise ((resolve, reject) =>{
     const absolutePath = checkAbsolute(path);
-    console.log('deberia ser el absolute path',absolutePath);
-    console.log('si el path existe', pathExists(absolutePath));
     if(pathExists(absolutePath) ){
-     resolve(readFiles(path))
-     if (!pathExists(absolutePath)) {
-      reject(('no existing path'));
-      return;
-    } 
+      readFiles(absolutePath)
+      .then((result)=>{
+        resolve(validate ? result: validateLinks(result))
+      })
+      .catch((err)=>{
+          console.log('err reading file', err);
+      })
+     
     }else{
     reject("not found path")
     }
-
   })
 }
 
 
-
-mdLinks("./archivesMd/links.md")
+//C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/links.md
+//./archivesMd/links.md
+/* mdLinks("C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/links.md")
 
   .then(links => {
     // => [{ href, text, file }, ...]
@@ -30,4 +31,6 @@ mdLinks("./archivesMd/links.md")
   .catch( error =>{
     console.log(error);
 
-  })
+  }) */
+
+  module.exports = { mdLinks };
