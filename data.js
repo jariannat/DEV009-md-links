@@ -3,7 +3,7 @@ const fs = require('fs');
 
 function checkAbsolute(filePath) {
     return path.resolve(filePath);
-  }
+  }  //validacion con el is absolute path.  
   
   function pathExists(filePath) {
     return fs.existsSync(filePath)

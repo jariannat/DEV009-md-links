@@ -1,12 +1,17 @@
 const { checkAbsolute, pathExists, readFiles} = require('./data');
 
 const mdLinks = (path) =>{
- const absolutePath = checkAbsolute(path);
 
   return new Promise ((resolve, reject) =>{
-    console.log('is path',absolutePath,pathExists(absolutePath))
+    const absolutePath = checkAbsolute(path);
+    console.log('deberia ser el absolute path',absolutePath);
+    console.log('si el path existe', pathExists(absolutePath));
     if(pathExists(absolutePath) ){
-     resolve(readFiles("C:\Users\JARI\OneDrive\Escritorio\md-links\DEV009-md-links\docs\01-milestone.md"))
+     resolve(readFiles(path))
+     if (!pathExists(absolutePath)) {
+      reject(('no existing path'));
+      return;
+    } 
     }else{
     reject("not found path")
     }
@@ -16,7 +21,7 @@ const mdLinks = (path) =>{
 
 
 
-mdLinks("docs\01-milestone.md")
+mdLinks("./archivesMd/links.md")
 
   .then(links => {
     // => [{ href, text, file }, ...]
@@ -24,5 +29,5 @@ mdLinks("docs\01-milestone.md")
   })
   .catch( error =>{
     console.log(error);
-    console.log('acaaaaa')
+
   })
