@@ -76,4 +76,8 @@ function checkAbsolute(filePath) {
     return Promise.all(validatePromises)
   }
 
+  //hito 3 
+
+  
+
   module.exports = { checkAbsolute, pathExists , readFiles, validateLinks}
