@@ -13,7 +13,7 @@ function checkAbsolute(filePath) {
     }
   }
   
-  
+  // funcion que verifica si la rutra existe
   function pathExists(filePath) {
     return fs.existsSync(filePath)
   }
@@ -21,6 +21,8 @@ function checkAbsolute(filePath) {
   function fileExtension(filePath) {
     return path.extname(filePath)
   }
+
+  //funcion que obtiene los links
   function getLinks(data, filePath) {
     const regex = /\[(.*?)\]\((https?:\/\/.*?)\)/g;
     const links = [];
@@ -34,23 +36,8 @@ function checkAbsolute(filePath) {
   
     return links;
   }
+  //funcion que valida los links
   
-
-  function readFiles(filePath) {
-    return new Promise((resolve, reject) => {
-  
-      fs.readFile(filePath, 'utf8', (err, data) => {
-        if (fileExtension(filePath) === '.md') {
-          resolve(getLinks(data, filePath));
-          } else {
-            console.log('error en read Files')
-          reject(('Not Markdown. Please, enter a markdown file (.md).', err))
-        }
-        
-      });
-    });
-  }
-
   function validateLinks(links) {
     const validatePromises = links.map(link =>{
       return axios.get(link.href)
@@ -75,9 +62,55 @@ function checkAbsolute(filePath) {
   
     return Promise.all(validatePromises)
   }
+//para leer los archivos
+  function readFiles(filePath) {
+    return new Promise((resolve, reject) => {
+  
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (fileExtension(filePath) === '.md') {
+          resolve(getLinks(data, filePath));
+          } else {
+          reject('Not Markdown. Please, enter a markdown file (.md).')
+        }
+        
+      });
+    });
+  }
 
   //hito 3 
 
+  function readPath(filePath){
   
+    const arrayAllPaths = [];
+    const files = fs.readdirSync(filePath);
+    
+    files.forEach(file => {
+      const fullPath = path.join(filePath, file);
+      const stat = fs.statSync(fullPath);
+      
+      if (stat.isDirectory()){
+        console.log('****** 92*******', fullPath)
+        const sub = readPath(fullPath); //recursividad
+        arrayAllPaths.push(...sub);
+      } else if (fileExtension(fullPath) === '.md') {
+        arrayAllPaths.push(fullPath);
+      }
+  
+    });
+  
+    return arrayAllPaths
+  }
+  
+  function getContent(filePath) {
+    const isDirectory = fs.statSync(filePath).isDirectory();
+    if (isDirectory) { 
+      const files = readPath(filePath); 
+      const allFiles = files.map(file => readFiles(file)); 
+      return Promise.all(allFiles) //returns a promise that resolves to an array of all the results from calling readFiles on each file
+      .then((links) => links.flat());
+    } 
+    return readFiles(filePath);
+  }
 
-  module.exports = { checkAbsolute, pathExists , readFiles, validateLinks}
+
+  module.exports = { checkAbsolute, pathExists , readFiles, validateLinks,  readPath,  getContent}

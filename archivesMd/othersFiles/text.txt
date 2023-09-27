@@ -1,0 +1,1 @@
+Estw es un archivo de prueba para probar un directorio que no contengaarchivos .md , por lo que el resultado deberia ser ignorar este archivo. 

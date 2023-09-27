@@ -1,4 +1,4 @@
-const { checkAbsolute, pathExists, readFiles, validateLinks} = require('./data');
+const { checkAbsolute, pathExists, readFiles, validateLinks, getContent} = require('./data');
 
 const mdLinks = (path, validate = false) =>{
 
@@ -10,19 +10,33 @@ const mdLinks = (path, validate = false) =>{
         resolve(validate ? result: validateLinks(result))
       })
       .catch((err)=>{
-          console.log('err reading file', err);
+        reject(err);
       })
      
     }else{
     reject("not found path")
     }
+
+    getContent(absolutePath)
+    .then((links) => {
+      if (links.length > 0) {
+        resolve(validate ? validateLinks(links) : links);
+      } else {
+          reject('file empty or no links to validate.');
+        }
+        return;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   })
+  
 }
 
 
 //C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/links.md
 //./archivesMd/links.md
-mdLinks("C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/links.md")
+mdLinks("C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/othersFiles/text.txt", true)
 
   .then(links => {
     // => [{ href, text, file }, ...]

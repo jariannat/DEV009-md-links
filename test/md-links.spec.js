@@ -1,7 +1,38 @@
 const {mdLinks} = require('../index.js');
 const {validateLinks} = require('../data.js')
 const path = 'C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/links.md';
-//const noLinks = 'C:/Users/JARI/OneDriv/Escritorio/md-links/DEV009-md-links/archivesMd/noLinks.md';
+const noLinksParam = 'C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/notFiles';
+const notFileMdParam = 'C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/othersFiles/text.txt'
+
+const validateLinksParam = [
+  {
+    href: 'https://www.google.com/',
+    text: 'Enlace a Google',
+    file: 'C:\\Users\\JARI\\OneDrive\\Escritorio\\md-links\\DEV009-md-links\\archivesMd\\links.md'
+  },
+  {
+    href: 'https://www.openai.com/',
+    text: 'Enlace a OpenAI',
+    file: 'C:\\Users\\JARI\\OneDrive\\Escritorio\\md-links\\DEV009-md-links\\archivesMd\\links.md'
+  }
+]
+
+const validateLinksResult =[
+  {
+  text: 'Enlace a Google',
+  href: 'https://www.google.com/',
+  file: 'C:\\Users\\JARI\\OneDrive\\Escritorio\\md-links\\DEV009-md-links\\archivesMd\\links.md',
+  status: 200,
+  statusText: 'OK'
+},
+{
+  text: 'Enlace a OpenAI',
+  href: 'https://www.openai.com/',
+  file: 'C:\\Users\\JARI\\OneDrive\\Escritorio\\md-links\\DEV009-md-links\\archivesMd\\links.md',
+  status: 200,
+  statusText: 'OK'
+}]
+
 describe('mdLinks', () => {
 
   it('deberia retornar un error si no el existe el path', () => {
@@ -22,38 +53,31 @@ describe('mdLinks', () => {
     ]))
    })
 
+   it('debería devolver un mesaje que indique que no se encontraron links o archivos validos ', () =>{
+    return mdLinks(noLinksParam)
+    .catch((results) => {
+      expect(results).toEqual('file empty or no links to validate.')
+    })
+  })
+
+  it('debería devolver un mensaje que indique que no es un archivo md', ()=>{
+    return mdLinks(notFileMdParam)
+    .catch((results) => {
+      expect(results).toEqual('Not Markdown. Please, enter a markdown file (.md).')
+    })
+  })
+
 });
 
 describe('validateLinks', () => {
-
   it('should validate links', () => {
-    const links = [
-      { href: 'valid-example', text: 'Valid Link', file: 'valid.md' },
-      { href: 'invalid-example', text: 'Invalid Link', file: 'invalid.md' },
-    ];
-  
-    return validateLinks(links)
+    return validateLinks(validateLinksParam)
     .then((results) => {
-      expect(results).toEqual([
-        {
-          text: 'Valid Link',
-          href: 'valid-example',
-          file: 'valid.md',
-          status: 200,
-          statusText: 'OK',
-        },
-        {
-          text: 'Invalid Link',
-          href: 'invalid-example',
-          file: 'invalid.md',
-          status: 404,
-          statusText: 'Fail',
-        },
-      ])
+      expect(results).toEqual(validateLinksResult)
     })
   });
-});
 
+})
 
 
 
