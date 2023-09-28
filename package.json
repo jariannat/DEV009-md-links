@@ -15,6 +15,9 @@
     "test": "jest --coverage",
     "eslint": "eslint --ext .js ."
   },
+  "bin": {
+    "mdlinks": "cli.js"
+  },
   "devDependencies": {
     "eslint": "^8.49.0",
     "jest": "^29.6.4"
