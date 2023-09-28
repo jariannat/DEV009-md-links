@@ -65,14 +65,12 @@ function checkAbsolute(filePath) {
 //para leer los archivos
   function readFiles(filePath) {
     return new Promise((resolve, reject) => {
-  
       fs.readFile(filePath, 'utf8', (err, data) => {
         if (fileExtension(filePath) === '.md') {
           resolve(getLinks(data, filePath));
           } else {
-          reject('Not Markdown. Please, enter a markdown file (.md).')
+          reject('Not Markdown. Please, enter a markdown file (.md).');
         }
-        
       });
     });
   }
@@ -87,9 +85,7 @@ function checkAbsolute(filePath) {
     files.forEach(file => {
       const fullPath = path.join(filePath, file);
       const stat = fs.statSync(fullPath);
-      
       if (stat.isDirectory()){
-        console.log('****** 92*******', fullPath)
         const sub = readPath(fullPath); //recursividad
         arrayAllPaths.push(...sub);
       } else if (fileExtension(fullPath) === '.md') {
@@ -97,7 +93,6 @@ function checkAbsolute(filePath) {
       }
   
     });
-  
     return arrayAllPaths
   }
   
@@ -106,8 +101,10 @@ function checkAbsolute(filePath) {
     if (isDirectory) { 
       const files = readPath(filePath); 
       const allFiles = files.map(file => readFiles(file)); 
-      return Promise.all(allFiles) //devuelve una promesa que se resuelve en array de todos los resultados de llamar a readFiles en cada archivo
-      .then((links) => links.flat());
+     
+    return Promise.all(allFiles) //devuelve una promesa que se resuelve en array de todos los resultados de llamar a readFiles en cada archivo
+      .then((links) =>{
+      return links.flat()});
     } 
     return readFiles(filePath);
   }

@@ -4,7 +4,6 @@ const { stats, statsValidate } = require('./data')
 const process = require('node:process');
 const path = process.argv[2];
 const options = process.argv.slice(3);
-console.log( 'process  data',options)
 
 if (!path) {
   console.log(('You should enter a path. You can enter a path to a file or a folder.\n\nFor example: mdlinks pathtofile.md or pathtofolder\n\nYou can also include the options --stats or --validate for further information.\n\n**Remember: mdlinks only reads markdown files.**'))
