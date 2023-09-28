@@ -7,5 +7,16 @@
   "bootcamp": {
     "createdAt": "2023-08-22T22:00:38.678Z",
     "commit": "24f5a51ee0a15f345b59fcd2ef44c3616abdfce5"
+  },
+  "dependencies": {
+    "axios": "^1.5.0"
+  },
+  "scripts": {
+    "test": "jest --coverage",
+    "eslint": "eslint --ext .js ."
+  },
+  "devDependencies": {
+    "eslint": "^8.49.0",
+    "jest": "^29.6.4"
   }
 }
