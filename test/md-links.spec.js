@@ -1,5 +1,5 @@
 const {mdLinks} = require('../index.js');
-const {validateLinks} = require('../data.js')
+const {validateLinks, stats, statsValidate} = require('../data.js')
 const path = 'C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/links.md';
 const noLinksParam = 'C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/notFiles';
 const notFileMdParam = 'C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/othersFiles/text.txt'
@@ -79,5 +79,22 @@ describe('validateLinks', () => {
 
 })
 
+describe('stats and statsValidate', () => {
+  const linksArray = [
+    { href: 'link1', statusText: 'OK' },
+    { href: 'link1', statusText: 'OK' },
+    { href: 'link2', statusText: 'OK' },
+    { href: 'link3', statusText: 'Fail' },
+    { href: 'link4', statusText: 'Fail' }
+  ];
 
+  it('returns the number of total links and the number of unique links', () => {
+    expect(stats(linksArray)).toEqual({ Total: 5, Unique: 4 });
+  });
+
+  it('returns the number of total links and the number of unique links', () => {
+    expect(statsValidate(linksArray)).toEqual({ Total: 5, Unique: 4, OK: 3, Broken: 2 });
+  });
+
+});
 

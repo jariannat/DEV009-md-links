@@ -106,11 +106,27 @@ function checkAbsolute(filePath) {
     if (isDirectory) { 
       const files = readPath(filePath); 
       const allFiles = files.map(file => readFiles(file)); 
-      return Promise.all(allFiles) //returns a promise that resolves to an array of all the results from calling readFiles on each file
+      return Promise.all(allFiles) //devuelve una promesa que se resuelve en array de todos los resultados de llamar a readFiles en cada archivo
       .then((links) => links.flat());
     } 
     return readFiles(filePath);
   }
 
+  function stats(arr) {
+    return {
+        'Total': arr.length,
+        'Unique': new Set(arr.map((links) => links.href)).size
+    }
+  }
+  
+  function statsValidate(arr) {
+    return {
+        'Total': arr.length,
+        'Unique': new Set(arr.map((link) => link.href)).size,
+        'OK': arr.filter((link) => link.statusText === 'OK').length,
+        'Broken': arr.filter((link) => link.statusText === 'Fail').length
+    }
+  }
 
-  module.exports = { checkAbsolute, pathExists , readFiles, validateLinks,  readPath,  getContent}
+
+  module.exports = { checkAbsolute, pathExists , readFiles, validateLinks,  readPath,  getContent, stats, statsValidate}

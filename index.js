@@ -1,5 +1,4 @@
 const { checkAbsolute, pathExists, readFiles, validateLinks, getContent} = require('./data');
-
 const mdLinks = (path, validate = false) =>{
 
   return new Promise ((resolve, reject) =>{
@@ -36,7 +35,7 @@ const mdLinks = (path, validate = false) =>{
 
 //C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/links.md
 //./archivesMd/links.md
-mdLinks("C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd/othersFiles/text.txt", true)
+mdLinks("C:/Users/JARI/OneDrive/Escritorio/md-links/DEV009-md-links/archivesMd")
 
   .then(links => {
     // => [{ href, text, file }, ...]
